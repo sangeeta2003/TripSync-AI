@@ -1,6 +1,7 @@
 package com.tripsync.backend.model;
 
 
+import com.tripsync.backend.models.enums.NotificationType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +43,7 @@ public class Notification {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,length = 30)
-    private Notification type;
+    private NotificationType notificationType = NotificationType.NEW_MESSAGE;
     @Column(nullable = false,length = 255)
     private String title;
 
