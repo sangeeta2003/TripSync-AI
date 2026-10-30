@@ -13,10 +13,16 @@ import java.util.UUID;
 @Entity
 @Table(
         name = "notification",
-        indexes = @Index(
-                name = "idx_notifications_user_read",
-                columnList = "user_id , is_read"
-        )
+        indexes = {
+                @Index(
+        name = "idx_notifications_user_read",
+        columnList = "user_id , is_read"
+),
+@Index(
+        name = "idx_notifications_trip",
+        columnList = "trip_id"
+)
+}
 )
 @Getter
 @Setter

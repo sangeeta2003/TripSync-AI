@@ -15,7 +15,7 @@ import java.util.UUID;
 
 
 
-@Entity
+
 
 @Entity
 @Table(
@@ -44,7 +44,7 @@ public class ActivityLog {
     @Column(nullable = false,length = 100)
     private String action;
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String,Object> details;
     @CreationTimestamp
     @Column(name = "created_at",nullable = false,updatable = false)
