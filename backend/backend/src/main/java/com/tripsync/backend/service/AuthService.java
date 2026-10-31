@@ -64,7 +64,7 @@ public class AuthService {
 
     public AuthResponse signUp(SignupRequest request) {
 
-        String email = request.email()
+        String email = request.getEmail()
                 .trim()
                 .toLowerCase();
 
@@ -79,12 +79,12 @@ public class AuthService {
         // Create new user
         User user = new User();
 
-        user.setName(request.name().trim());
+        user.setName(request.getName().trim());
         user.setEmail(email);
 
         // Encode password before saving
         user.setPasswordHash(
-                passwordEncoder.encode(request.password())
+                passwordEncoder.encode(request.getPassword())
         );
 
         // Save user in database
@@ -98,7 +98,7 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
 
-        String email = request.email()
+        String email = request.getEmail()
                 .trim()
                 .toLowerCase();
 
@@ -107,7 +107,7 @@ public class AuthService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             email,
-                            request.password()
+                            request.getPassword()
                     )
             );
 
@@ -136,7 +136,7 @@ public class AuthService {
     public AuthResponse refresh(RefreshTokenRequest request) {
 
         // Hash the incoming refresh token
-        String tokenHash = hashToken(request.refreshToken());
+        String tokenHash = hashToken(request.getRefreshToken());
 
         // Find active refresh token in database
         RefreshToken storedToken = refreshTokenRepository
@@ -170,7 +170,7 @@ public class AuthService {
 
     public void logout(LogoutRequest request) {
 
-        String tokenHash = hashToken(request.refreshToken());
+        String tokenHash = hashToken(request.getRefreshToken());
 
         refreshTokenRepository
                 .findByTokenHashAndRevokedFalse(tokenHash)
