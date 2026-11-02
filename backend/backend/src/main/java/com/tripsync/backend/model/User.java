@@ -30,6 +30,8 @@ public class User {
     @CreationTimestamp
     @Column(name = "created_at",nullable = false,updatable = false)
     private Instant createdAt;
+    @Column(name = "is_active",nullable = false)
+    private boolean active = true;
 //    @UpdateTimestamp
 //    @Column(name = "updated_at",nullable = false,updatable = false)
 //    private Instant updateAt;

@@ -41,6 +41,7 @@ public class SecurityConfig {
                     .withUsername(user.getEmail())
                     .password(user.getPasswordHash())
                     .authorities("ROLE_USER")
+                    .disabled(!user.isActive())
                     .build();
         };
     }

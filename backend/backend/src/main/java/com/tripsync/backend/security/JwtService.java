@@ -61,6 +61,7 @@ public class JwtService {
             String username = extractUsername(token);
 
             return username.equals(userDetails.getUsername())
+                    && userDetails.isEnabled()
                     && extractAllClaims(token)
                     .getExpiration()
                     .after(new Date());
@@ -82,4 +83,5 @@ public class JwtService {
     public long getAccessTokenExpiration() {
         return accessTokenExpiration;
     }
+
 }

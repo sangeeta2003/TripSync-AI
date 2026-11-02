@@ -89,6 +89,7 @@ public class AuthService {
 
         // Save user in database
         User savedUser = userRepository.save(user);
+        System.out.println("Created At: " + savedUser.getCreatedAt());
 
         // Generate tokens and return response
         return generateAuthResponse(savedUser);
@@ -215,7 +216,8 @@ public class AuthService {
         UserResponse userResponse = new UserResponse(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getCreatedAt()
         );
 
         // Return authentication response
