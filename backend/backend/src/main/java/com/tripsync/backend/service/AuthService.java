@@ -88,10 +88,10 @@ public class AuthService {
         );
 
         // Save user in database
-        User savedUser = userRepository.save(user);
-        System.out.println("Created At: " + savedUser.getCreatedAt());
+        User savedUser = userRepository.saveAndFlush(user);
 
-        // Generate tokens and return response
+//        System.out.println("Created At: " + savedUser.getCreatedAt());
+
         return generateAuthResponse(savedUser);
     }
 

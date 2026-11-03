@@ -43,7 +43,7 @@ public class UserController {
     @DeleteMapping("/me")
     public ResponseEntity<Void> deactivateAccount(@AuthenticationPrincipal UserDetails userDetails){
         userService.deactivateAccount(userDetails.getUsername());
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
 
     }
 }
