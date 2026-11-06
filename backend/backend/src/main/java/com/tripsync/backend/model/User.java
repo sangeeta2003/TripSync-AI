@@ -25,15 +25,13 @@ public class User {
     private String name;
     @Column(nullable = false,unique = true,length = 255)
     private String email;
-    @Column(name = "password_hash", nullable = false)
+    @Column(nullable = false)
     private String passwordHash;
-    @CreationTimestamp
-    @Column(name = "created_at",nullable = false,updatable = false)
-    private Instant createdAt;
-    @Column(name = "is_active",nullable = false)
-    private boolean active = true;
-//    @UpdateTimestamp
-//    @Column(name = "updated_at",nullable = false,updatable = false)
-//    private Instant updateAt;
+    @Column(nullable = false)
+    private boolean enabled = true;
+
+    @Column(nullable = false)
+    private Instant createdAt = Instant.now();
+
 
 }

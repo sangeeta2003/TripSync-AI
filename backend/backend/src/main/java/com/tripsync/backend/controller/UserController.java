@@ -3,7 +3,6 @@ package com.tripsync.backend.controller;
 import com.tripsync.backend.dto.auth.user.ChangePasswordRequest;
 import com.tripsync.backend.dto.auth.user.UpdateProfileRequest;
 import com.tripsync.backend.dto.auth.user.UserProfileResponse;
-import com.tripsync.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

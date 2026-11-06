@@ -1,7 +1,7 @@
 package com.tripsync.backend.model;
 
 
-import com.tripsync.backend.models.enums.ExpenseCategory;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,20 +27,14 @@ public class Expense {
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "paid_by",nullable = false)
     private User paidBy;
-    @Column(nullable = false,length = 255)
-    private String description;
+    @Column(nullable = false)
+    private String title;
     @Column(nullable = false,precision = 12,scale = 2)
     private BigDecimal amount;
     @Column(nullable = false,length = 3)
-    private String currency = "INR";
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false,length = 30)
-    private ExpenseCategory expenseCategory = ExpenseCategory.OTHER;
-    @Column(name = "expense_date",nullable = false)
-    private Instant expenseDate = Instant.now();
-    @CreationTimestamp
-    @Column(name = "created_at",nullable = false,updatable = false)
-    private Instant createdAt;
+    private String currency;
+
+    private Instant createdAt = Instant.now();
 
 
 }

@@ -1,7 +1,7 @@
 package com.tripsync.backend.model;
 
 
-import com.tripsync.backend.models.enums.SettlementStatus;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,22 +27,18 @@ public class Settlement {
     private Trip trip;
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "payer_id",nullable = false)
-    private User payer;
+
+    private User fromUser;
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "receiver_id",nullable = false)
-    private User receiver;
+
+    private User toUser;
 
     @Column(nullable = false,precision = 12,scale = 2)
     private BigDecimal amount;
+    private Domain.SettlementStatus status = Domain.SettlementStatus.PENDING;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false,length = 20)
-    private SettlementStatus status = SettlementStatus.PROPOSED;
 
-    @CreationTimestamp
-    @Column(name = "created_at",nullable = false,updatable = false)
-    private Instant createdAt;
 
+    private Instant createdAt = Instant.now();
 
 }

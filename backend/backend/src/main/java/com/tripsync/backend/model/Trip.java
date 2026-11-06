@@ -1,7 +1,7 @@
 package com.tripsync.backend.model;
 
 
-import com.tripsync.backend.models.enums.TripStatus;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,28 +27,26 @@ public class Trip {
     private String title;
     @Column(nullable = false,length = 200)
     private String destination;
-@Column(name = "start_date", nullable = false)
+@Column( nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false)
+    @Column(nullable = false)
     private LocalDate endDate;
     @Column(precision = 12,scale = 2)
     private BigDecimal budget;
 
     @Column(nullable = false,length = 3)
-    private String currency = "INR";
+    private String currency ;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false,length = 20)
-    private TripStatus status = TripStatus.PLANNING;
-
+    private Domain.TripStatus status = Domain.TripStatus.PLANNING;
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "owner_id",nullable = false)
+
     private User owner;
 
-    @CreationTimestamp
-    @Column(name = "created_at",nullable = false,updatable = false)
-    private Instant createdAt;
+
+    @Column(nullable = false)
+    private Instant createdAt = Instant.now();
 
 
 

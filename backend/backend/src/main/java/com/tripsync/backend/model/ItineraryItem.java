@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -19,18 +21,20 @@ public class ItineraryItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "trip_id",nullable = false)
+
     private Trip trip;
-    @Column(name = "day_number",nullable = false)
-    private Integer dayNumber;
+
+    private int dayNumber;
     @Column(nullable = false,length = 200)
     private String title;
     @Column(columnDefinition = "TEXT")
     private String description;
-    @Column(name = "estimated_cost",precision = 12,scale = 2)
-    private BigDecimal estimatedCost = BigDecimal.ZERO;
-    @Column(name = "sort_order",nullable = false)
-    private Integer sortOrder = 0;
+    private String location;
+    private LocalTime startTime;
+    @Column(precision = 12,scale = 2)
+    private BigDecimal estimatedCost ;
+
+    private int sortOrder ;
 
 
 }

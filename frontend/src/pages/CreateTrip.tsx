@@ -1,0 +1,11 @@
+import { useState,type FormEvent } from 'react'
+import { ArrowLeft } from 'lucide-react'
+import { Link,useNavigate } from 'react-router-dom'
+import { api,errorMessage } from '../lib/api'
+import { ErrorMessage,Field,PageHeader } from '../components/UI'
+export default function CreateTrip(){
+ const navigate=useNavigate();const [form,setForm]=useState({title:'',destination:'',startDate:'',endDate:'',budget:'',currency:'INR'});const [error,setError]=useState('');const [busy,setBusy]=useState(false)
+ const change=(k:keyof typeof form,v:string)=>setForm(p=>({...p,[k]:v}))
+ async function submit(e:FormEvent){e.preventDefault();setError('');setBusy(true);try{const {data}=await api.post('/api/trips',{...form,budget:Number(form.budget)});navigate(`/trips/${data.id}`)}catch(err){setError(errorMessage(err))}finally{setBusy(false)}}
+ return <><PageHeader eyebrow="START SOMETHING GREAT" title="Create a trip" subtitle="Add the basics. You can invite your group next." action={<Link to="/trips" className="btn secondary"><ArrowLeft size={16}/> Back</Link>}/><form onSubmit={submit} className="form-card form-stack"><div className="form-grid"><Field label="Trip name"><input value={form.title} onChange={e=>change('title',e.target.value)} placeholder="e.g. Kerala escape" required maxLength={150}/></Field><Field label="Destination"><input value={form.destination} onChange={e=>change('destination',e.target.value)} placeholder="e.g. Varkala, Kerala" required/></Field><Field label="Start date"><input type="date" value={form.startDate} onChange={e=>change('startDate',e.target.value)} required/></Field><Field label="End date"><input type="date" value={form.endDate} min={form.startDate} onChange={e=>change('endDate',e.target.value)} required/></Field><Field label="Total group budget"><input type="number" min="0" step="0.01" value={form.budget} onChange={e=>change('budget',e.target.value)} placeholder="25000" required/></Field><Field label="Currency"><select value={form.currency} onChange={e=>change('currency',e.target.value)}><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option></select></Field></div>{error&&<ErrorMessage>{error}</ErrorMessage>}<div className="form-actions"><button className="btn primary" disabled={busy}>{busy?'Creating...':'Create trip'}</button></div></form></>
+}

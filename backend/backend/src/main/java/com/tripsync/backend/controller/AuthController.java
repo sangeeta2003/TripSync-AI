@@ -1,7 +1,6 @@
 package com.tripsync.backend.controller;
 
 import com.tripsync.backend.dto.auth.*;
-import com.tripsync.backend.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

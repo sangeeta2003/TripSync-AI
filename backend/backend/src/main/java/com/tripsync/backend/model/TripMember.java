@@ -1,6 +1,6 @@
 package com.tripsync.backend.model;
 
-import com.tripsync.backend.models.enums.TripMemberRole;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,20 +29,23 @@ public class TripMember {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "trip_id",nullable = false)
+
     private Trip trip;
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "user_id",nullable = false)
+
 private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false,length = 20)
-    private TripMemberRole rolw = TripMemberRole.MEMBER;
+    @Column(nullable = false)
+   private Domain.Role role;
+    @Column(nullable = false, length = 20)
+    private String status = "ACTIVE";
 
-    @CreationTimestamp
-    @Column(name = "joined_at",nullable = false,updatable = false)
-    private Instant joinedAt;
+
+
+    @Column(nullable = false)
+    private Instant joinedAt = Instant.now();
 
 
 }

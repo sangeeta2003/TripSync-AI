@@ -1,5 +1,4 @@
 package com.tripsync.backend.config;
-import com.tripsync.backend.repository.UserRepository;
 import com.tripsync.backend.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

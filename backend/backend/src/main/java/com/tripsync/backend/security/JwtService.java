@@ -1,87 +1,41 @@
 package com.tripsync.backend.security;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
+
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
-import java.time.Instant;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
 public class JwtService {
-    private final SecretKey secretKey;
-    private final long accessTokenExpiration;
+    private final SecretKey key;
+    private final long ttl;
 
-    public JwtService(
-            @Value("${app.jwt.secret}") String secret,
-            @Value("${app.jwt.access-token-expiration}") long expiration
-    ) {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-
-        if (keyBytes.length < 32) {
-            throw new IllegalArgumentException(
-                    "JWT secret must contain at least 32 bytes"
-            );
-        }
-
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
-        this.accessTokenExpiration = expiration;
+    public JwtService(@Value("${app.jwt.secret}") String secret, @Value("${app.jwt.minutes}") long minutes) {
+        if (secret.getBytes(StandardCharsets.UTF_8).length < 32)
+            throw new IllegalArgumentException("JWT_SECRET must be at least 32 bytes");
+        key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        ttl = minutes * 60000;
     }
 
-    public String generateAccessToken(UserDetails userDetails) {
-
-        Instant now = Instant.now();
-
-        return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(Date.from(now))
-                .expiration(
-                        Date.from(now.plusMillis(accessTokenExpiration))
-                )
-                .signWith(secretKey)
+    public String create(String email) {
+        Date now = new Date();
+        return Jwts.builder().subject(email).issuedAt(now).expiration(new Date(now.getTime() + ttl)).signWith(key)
                 .compact();
     }
 
-    public String extractUsername(String token) {
-
-        return extractAllClaims(token).getSubject();
+    public String email(String token) {
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
     }
 
-    public boolean isTokenValid(
-            String token,
-            UserDetails userDetails
-    ) {
-
+    public boolean valid(String token) {
         try {
-            String username = extractUsername(token);
-
-            return username.equals(userDetails.getUsername())
-                    && userDetails.isEnabled()
-                    && extractAllClaims(token)
-                    .getExpiration()
-                    .after(new Date());
-
-        } catch (JwtException | IllegalArgumentException exception) {
+            email(token);
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
-
-    private Claims extractAllClaims(String token) {
-
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public long getAccessTokenExpiration() {
-        return accessTokenExpiration;
-    }
-
 }
